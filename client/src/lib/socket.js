@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-// Connect to the Node.js backend
-const SERVER_URL = "https://your-backend-name.onrender.com"; // Replace with your ACTUAL Render URL
+// Connects your React app to your live Render WebSocket server
+const SERVER_URL = "https://collaborativecode-58h1.onrender.com"; 
 
 export const socket = io(SERVER_URL);

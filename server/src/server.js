@@ -6,14 +6,12 @@ import registerRoomHandlers from './sockets/roomHandler.js';
 
 const app = express();
 
-// Allows standard HTTP requests from any origin (Vercel)
 app.use(cors());
 app.use(express.json());
 const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: { 
-        // Changed to wildcard so Vercel can establish the WebSocket connection
         origin: "*", 
         methods: ["GET", "POST"]
     }
@@ -32,6 +30,7 @@ app.post('/execute', async (req, res) => {
   const { source_code, language, version } = req.body; 
 
   try {
+    // CRITICAL: The backend must ask the external Piston API to compile the code.
     const response = await fetch('https://emkc.org/api/v2/piston/execute', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -63,7 +62,6 @@ app.post('/execute', async (req, res) => {
   }
 });
 
-// CRITICAL FIX: Use Render's environment port, fallback to 5000 locally
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
